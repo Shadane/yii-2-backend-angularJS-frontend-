@@ -27,16 +27,10 @@ INSTALLATION
 ------------
 
 
-
+Put yiiangjs folder and .htaccess file into your webroot directory, otherwise you have to edit .htaccess file to set your rewrite rules.
 ~~~
-http://localhost/basic/web/
+the site will be available at http://localhost/
 ~~~
-
-
-CONFIGURATION
--------------
-
-### Database
 
 Edit the file `config/db.php` with real data, for example:
 
@@ -49,3 +43,5 @@ return [
     'charset' => 'utf8',
 ];
 ```
+
+Then migrate with <code>php yii migrate</code>
