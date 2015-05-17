@@ -1,0 +1,165 @@
+ 
+<div  ng-controller="FormController as form">
+
+    <form name="adForm" ng-submit="adForm.$valid && sendForm()" class="form-horizontal" id="adsform" method="POST" novalidate>
+
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-7 ">
+                <div class="radio">
+
+                    <label><input ng-model="adform.private" type="radio" name="private" value="0" checked="checked" id="inlineRadio1" />Частное лицо</label>
+                    <label><input ng-model="adform.private" type="radio" name="private" value="1" id="inlineRadio1" />Компания</label>
+                </div>
+            </div>
+        </div>  
+
+        <div class="form-group">
+            <label for="seller_name" class="col-sm-5 control-label">Ваше имя *</label>
+            <div class="col-sm-7" ng-class="{'has-error': adForm.$submitted && adForm.seller_name.$invalid}">
+                <input ng-model="adform.seller_name" type="text" class="requiredName form-control input-sm" id="seller_name" ng-maxlength="20" value="" name="seller_name" required>
+            </DIV>
+        </div>
+        <div class="form-group"> 
+            <label class="col-sm-5 control-label" for="email">Электронная почта *</label>
+            <div class="col-sm-7" ng-class="{'has-error': adForm.$submitted && adForm.email.$invalid}">
+                <input ng-model="adform.email" class="requiredEmail form-control input-sm" id="email" type="email" maxlength="50" value="" name="email" required>
+            </div>
+        </DIV>
+
+
+
+        <div class="dropdown form-group ">
+            <LABEL class="col-sm-5 control-label" for="authors">Список Авторов&nbsp;<a href="?" title="Можете оставить поля 'Имя' и 'Электронная почта' пустыми и выбрать их из существующих">?</A></LABEL>
+            <div class="col-sm-7">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    <span class="caret "></span>
+                </button>
+                <ul class="dropdown-menu appendAuthors" role="menu" aria-labelledby="dropdownMenu1">
+                    <li ng-repeat="author in form.data.authors" role="presentation"><a class="authorMenu" ng-click="auFill(author.email, author.seller_name)" role="menuitem" tabindex="-1">Имя:&nbsp;&nbsp;{{author.seller_name}}&nbsp;&nbsp;&nbsp;&nbsp;Почта:&nbsp;&nbsp;{{author.email}}</a></li>
+
+                </ul>
+            </div>
+        </DIV>
+
+
+
+
+        <div class="form-group">
+            <div class="checkbox">
+                <div class="col-sm-offset-5 col-sm-7">
+                    <label><input ng-model="adform.allow_mails" type="checkbox" name="allow_mails" value="1" id="allow_mails" />Я не хочу получать вопросы по объявлению по e-mail</label><br />
+                </div>
+            </div>
+        </DIV>
+
+        <div class="form-group" ng-class="{'has-error': adForm.$submitted && adForm.phone.$invalid}"> 
+            <label class="col-sm-5 control-label" for="phone">Номер телефона</label>
+            <div class="col-sm-7">
+                <input ng-model="adform.phone" class="form-control input-sm" type="tel" ng-maxlength="11" maxlength="11" id="phone"  value="" name="phone">
+            </div>
+        </div>
+
+        <div class="form-group"> 
+            <label  class="col-sm-5 control-label" for="city">Город</label> 
+            <div class="col-sm-7">
+                <select ng-model="adform.location_id" ng-options="city.city_id as city.city_name for city in form.data.cities" class="form-control input-sm" id="city" title="Выберите Ваш город" name="location_id" > 
+                    <option value="">-- Выберите город --</option>
+                    <option value="" disabled="disabled">-- Города --</option>
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group"> 
+            <label class="col-sm-5 control-label" for="ctgs">Категория</label> 
+            <div class="col-sm-7">
+                <select ng-model='adform.category_id' ng-options="opt.cat_id as opt.category group by opt.parent for opt in form.data.categories" class="form-control input-sm" id="ctgs" name="category_id">
+                    <option value="">-- Выберите категорию --</option>
+                </select> 
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class=" col-sm-5 control-label" for="title">Название объявления *</label> 
+            <div class="col-sm-7" ng-class="{'has-error': adForm.$submitted && adForm.title.$invalid}">
+                <input ng-model="adform.title" class="requiredTitle form-control input-sm" id="title" type="text" maxlength="30" value="" name="title" required>
+            </div>
+        </div>
+
+        <div class="form-group"> 
+            <label  class="col-sm-5 control-label" for="description">Описание объявления</label>
+            <div class="col-sm-7">
+                <textarea ng-model="adform.description" class="form-control input-sm" maxlength="500" name="description" id="description"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group" > 
+            <label  class="col-sm-5 control-label" for="price">Цена</label>
+            <div class="col-sm-7" ng-class="{'has-error': adForm.$submitted && adForm.price.$invalid}">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input ng-model="adform.price" class="form-control input-sm" id="price" type="number" min="0" max="999999"  value="0" name="price" required>
+                </DIV>
+            </div>
+        </div>
+
+        <div class="form-group"> 
+            <input ng-model="adform.id" class="hidden" type="hidden" id="id" value="" name="id" >
+            <div class="col-sm-offset-5 col-sm-7">
+
+                <input ng-disabled="!form.sendButton.active" class="submit_button btn btn-success btn-large" type="submit" value="{{adform.id>-1? 'Обновить':'Добавить'}}" name="main_form_submit"> </DIV>
+        </div>
+
+        <div style="position: fixed;bottom: 0;right: 0;width: 350px" class="text-center">
+
+            <div ng-show="form.auMsg.show" class="alert msgsFade {{form.auMsg.class}}" style="position: relative;" >
+                <div id="container_delete" style="display:inline-block">{{form.auMsg.message}}</div>&nbsp;
+                <button type="button" class="close" ng-click="hideMsgs('hide auMsg box')"><span ng-show="form.auMsg.show" aria-hidden="true">&times;</span></button>
+
+            </div>
+
+            <div ng-show="form.adMsg.show" class="alert msgsFade {{form.adMsg.class}}" style="position: relative;" >
+                <div id="container_delete" style="display:inline-block">{{form.adMsg.message}}</div>&nbsp;
+                <button type="button" class="close" ng-click="hideMsgs('hide adMsg box')"><span ng-show="form.adMsg.show" aria-hidden="true">&times;</span></button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <div class="container_ads container">      
+
+
+        <table class="table table-hover">
+            <h2 class="sub-header text-center">Все объявления</h2>
+            <THEAD>
+                <tr>
+
+                    <th>Название объявления </td>
+                    <th>Цена </td>
+                    <th>Имя </td>
+                    <th>Действия</td>
+                </tr>
+            </THEAD>
+            <tbody>
+                <tr ng-show="adform.price || adform.title || adform.seller_name" class="success previewFade">
+                    <td>{{adform.title}}</td>
+                    <td>{{adform.price|currency:"$":0}}</td>
+                    <td id="">{{adform.seller_name}}</td>
+                    <td id=""></td>
+                </tr>
+
+                <tr ng-repeat="ad in form.data.ads" ng-class="{'warning' : ad.private > 0}" class="adTable">
+                    <td>{{ad.title}}</td>
+                    <td>{{ad.price|currency:"$":0}}</td>
+                    <td id="">{{form.data.authors[ad.author_id].seller_name}}</td>
+                    <td><a ng-click="edit(ad.id)" class="edit btn btn-xs">Редактировать</a>&nbsp;&nbsp;<a class="delete btn btn-xs" ng-click="delete(ad.id)">Удалить</a></td>
+                </tr>
+
+            </TBODY>
+        </TABLE>
+    </div>
+
+</div>

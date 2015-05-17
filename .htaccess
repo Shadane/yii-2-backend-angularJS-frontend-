@@ -1,0 +1,12 @@
+php_flag display_errors on
+php_value error_reporting 32767
+AddDefaultCharset utf-8
+
+RewriteEngine on
+
+
+# если мы не вводим ничего после названия сайта
+# ИЛИ если после названия сайта есть /api
+# то перенаправляем запрос в YII;
+RewriteRule ^(.*)$ yiiangjs/web/$1 [L]
+
